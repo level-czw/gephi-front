@@ -3,15 +3,18 @@ import ReactDOM from "react-dom";
 
 import "./styles.css";
 import Root from "./views/Root";
+
+
+import "antd/dist/antd.css";
 import "./script"
 
+// @ts-ignore
+
+
+
+
 ReactDOM.render(
-  <React.StrictMode>
-      <div id="panel">
-          <button id="button">点我</button>
-          <p>wdwdwd<br/><br/>dadada</p>
-      </div>
-    <Root />
-  </React.StrictMode>,
+    <><Root/></>,
   document.getElementById("root"),
 );
+

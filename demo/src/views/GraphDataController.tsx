@@ -2,6 +2,9 @@ import { useSigma } from "react-sigma-v2";
 import { FC, useEffect } from "react";
 import { keyBy, omit } from "lodash";
 
+// @ts-ignore
+import NODELIST from "./data";
+
 import { Dataset, FiltersState } from "../types";
 
 const GraphDataController: FC<{ dataset: Dataset; filters: FiltersState }> = ({ dataset, filters, children }) => {
@@ -12,20 +15,21 @@ const GraphDataController: FC<{ dataset: Dataset; filters: FiltersState }> = ({ 
    * Feed graphology with the new dataset:
    */
   useEffect(() => {
-      console.log(dataset)
     if (!graph || !dataset) return;
 
     // const clusters = keyBy(dataset.clusters, "key");
     // const tags = keyBy(dataset.tags, "key");
 
-    dataset.nodes.forEach((node) =>
-        graph.addNode(node.id, {
-          ...node,
-          color:node.color,
-          size:node.size
-        }),
+    dataset.nodes.forEach((node) => {
+            graph.addNode(node.id, {
+                ...node,
+                color: node.color,
+                size: node.size
+            })
+                NODELIST.push(node.label)
+        }
     );
-    console.log(dataset)
+
     dataset.edges.forEach((edge) => graph.addEdge(edge.source, edge.target, { size: 1,color:edge.color }));
 
     graph.forEachNode((node) =>
@@ -49,7 +53,9 @@ const GraphDataController: FC<{ dataset: Dataset; filters: FiltersState }> = ({ 
   //   );
   // }, [graph, filters]);
 
-  return <>{children}</>;
+  return <>
+      {children}
+  </>;
 };
 
 export default GraphDataController;
