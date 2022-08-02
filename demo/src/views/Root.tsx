@@ -65,17 +65,12 @@ const Root: FC = () => {
         // @ts-ignore
         button.onclick=function () {
             // @ts-ignore
-            console.log(NODELIST)
-            // @ts-ignore
             const name=document.getElementById("name").value
             // @ts-ignore
             const file1=document.getElementById("file1").files[0]
             // @ts-ignore
             const file2=document.getElementById("file2").files[0];
 
-            const config = {
-                headers: { "Content-Type": "multipart/form-data;boundary="+new Date().getTime() }
-            };
             let formData=new FormData();
             formData.append("graphName",name);formData.append("nodeFile",file1);formData.append("edgeFile",file2)
             axios.post(url+"upload",formData)
@@ -85,21 +80,36 @@ const Root: FC = () => {
         }
     }
 
-function f() {
-    console.log("lalalla")
-}
 
 
     if(nodelist.length==0){
         for (let i = 0; i < NODELIST.length; i++) {
             // @ts-ignore
-            nodelist.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+            nodelist.push(<Option key={NODELIST[i]}>{NODELIST[i]}</Option>);
         }
-
-        console.log(nodelist)
     }
 
+    let list: any[] | undefined=[]
 
+
+    function test1(value: any) {
+        list=value
+    }
+
+    function f1() {
+        // @ts-ignore
+        const name=document.getElementById("graphName").value
+        let formData=new FormData();
+        console.log(name)
+        console.log(list)
+        formData.append("graphName",name); // @ts-ignore
+        formData.append("nodeNameList",list)
+        console.log(formData)
+        axios.post(url+"filter",formData)
+            .then(response=>{
+                console.log(response);
+            })
+    }
 
 
   if (!dataset) return null;
@@ -135,7 +145,13 @@ function f() {
                   <input type={"file"} id={"file2"}/>
                   <Button id={"submit"}>提交</Button>
               </div>
-              <button onClick={f}>haha</button>
+
+              <div>
+                  <Select mode={"multiple"} style={{width: 200,}} id={"nodeNameList"} onChange={test1}>{nodelist}</Select>
+                  <Input id={"graphName"} style={{width: 200}}/>
+                  <Button onClick={f1}>点我</Button>
+              </div>
+
 
           </div>
 
